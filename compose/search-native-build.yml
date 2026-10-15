@@ -29,6 +29,9 @@ services:
     build:
       # Commit that provides metabrainz/python:3.13-20260216
       context: https://github.com/metabrainz/docker-python.git#2b06100ea6d402edc152c1f82145521bf46d4f5a:3.13
+      # Its pinned base image tag is amd64-only, use the first multi-arch one instead.
+      additional_contexts:
+        metabrainz/consul-template-base:noble-1.0.2-v0.1-1: docker-image://metabrainz/consul-template-base:noble-1.0.2-v0.3-2
     image: musicbrainz-docker_python-base:3.13-20260216
 
   # Build-only service: it is not meant to be run.
