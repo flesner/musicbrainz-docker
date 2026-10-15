@@ -40,10 +40,11 @@ ARG SIR_VERSION=py313-stage1
 
 LABEL org.metabrainz.sir.version="${SIR_VERSION}"
 
-ARG DOCKERIZE_VERSION=v0.6.1
-RUN curl -sSLO --retry 5 https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && \
-    tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && \
-    rm -f dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+ARG TARGETARCH
+ARG DOCKERIZE_VERSION=v0.10.1
+RUN curl -sSLO --retry 5 https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-$TARGETARCH-$DOCKERIZE_VERSION.tar.gz && \
+    tar -C /usr/local/bin -xzvf dockerize-linux-$TARGETARCH-$DOCKERIZE_VERSION.tar.gz && \
+    rm -f dockerize-linux-$TARGETARCH-$DOCKERIZE_VERSION.tar.gz
 
 COPY scripts/* /usr/local/bin/
 
