@@ -1,0 +1,13 @@
+# Description: Run search services (indexer, search) as linux/amd64 on other architectures, e.g. arm64 (emulated, slow; alternative to search-native-build)
+
+services:
+  indexer:
+    platform: linux/amd64
+    build:
+      platforms:
+        - linux/amd64
+  search:
+    platform: linux/amd64
+    build:
+      platforms:
+        - linux/amd64

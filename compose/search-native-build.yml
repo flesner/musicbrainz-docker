@@ -1,0 +1,40 @@
+# Description: Build search services (indexer, search) natively, e.g. for arm64 (upstream base images are amd64-only)
+
+# The upstream base images `metabrainz/python` and `metabrainz/mb-solr` are
+# only published for amd64. Their sources are architecture-independent, so
+# they are built locally from Git and then used in place of the Docker Hub
+# images as base images of `indexer` and `search`.
+#
+# The Docker Hub image names below must match the `FROM` lines of
+# build/sir/Dockerfile and build/solr/Dockerfile (Compose cannot interpolate
+# them), so update them together with those files.
+#
+# The first build is slow, mostly because it compiles Python from source.
+
+services:
+  indexer:
+    build:
+      additional_contexts:
+        metabrainz/python:3.13-20260216: service:python-base
+
+  search:
+    build:
+      additional_contexts:
+        metabrainz/mb-solr:4.1.0: service:mb-solr-base
+
+  # Build-only service: it is not meant to be run.
+  python-base:
+    profiles:
+      - build-only
+    build:
+      # Commit that provides metabrainz/python:3.13-20260216
+      context: https://github.com/metabrainz/docker-python.git#2b06100ea6d402edc152c1f82145521bf46d4f5a:3.13
+    image: musicbrainz-docker_python-base:3.13-20260216
+
+  # Build-only service: it is not meant to be run.
+  mb-solr-base:
+    profiles:
+      - build-only
+    build:
+      context: https://github.com/metabrainz/mb-solr.git#v4.1.0
+    image: musicbrainz-docker_mb-solr-base:4.1.0
