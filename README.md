@@ -424,13 +424,14 @@ In Docker Compose, it is possible to override the base configuration using
 
 Some overrides are available under [`compose`](compose/) directory.
 
-On arm64 hosts, the prebuilt `db` image is amd64-only, so add `compose/db-own-build.yml`
-to build it locally. Add `compose/musicbrainz-multi-arch.yml` as well to build the
-`musicbrainz` image natively. The upstream images behind `indexer` and `search` are
-amd64-only too, so for search either add `compose/search-native-build.yml` to build
-them natively (slow first build, mostly compiling Python), or
-`compose/search-amd64-emulation.yml` to run them under emulation
-(requires QEMU/binfmt support, and indexing will be slow).
+On arm64 hosts, the prebuilt `musicbrainz` image works as is, but the prebuilt `db`
+image is amd64-only, so add `compose/db-own-build.yml` to build it locally.
+(`compose/musicbrainz-multi-arch.yml` is only meant for building the `musicbrainz`
+image for both architectures, which requires emulation of the foreign one.)
+The upstream images behind `indexer` and `search` are amd64-only too, so for search
+either add `compose/search-native-build.yml` to build them natively (slow first build,
+mostly compiling Python), or `compose/search-amd64-emulation.yml` to run them under
+emulation (requires QEMU/binfmt support, and indexing will be slow).
 Feel free to write your own overrides under [`local`](local/) directory.
 
 The helper script [`admin/configure`](admin/configure) is able to:
